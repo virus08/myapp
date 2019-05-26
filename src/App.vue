@@ -17,7 +17,29 @@ const apiService = new APIService();
 export default {
   name: 'App',
   data: () => ({
-    data: {}
+    data: {  
+            "id" : 1, 
+            "type": "horizontal",
+            "size": 1,
+            "children": [
+                {
+                    "type": "panel",
+                    "size": 1,
+                    "component": "color",
+                    "meta": {
+                    "color": "hsl(100, 80%, 73%)"
+                    }
+                },
+                {
+                    "type": "panel",
+                    "size": 1,
+                    "component": "color",
+                    "meta": {
+                    "color": "hsl(0, 80%, 73%)"
+                    }
+                }
+            ]
+        }
     }),
   methods: {
     getData(){

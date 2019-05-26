@@ -13,14 +13,14 @@
                     "color": "hsl(100, 80%, 73%)"
                     }
                 },
-            {
-                "type": "panel",
-                "size": 1,
-                "component": "color",
-                "meta": {
-                "color": "hsl(0, 80%, 73%)"
+                {
+                    "type": "panel",
+                    "size": 1,
+                    "component": "color",
+                    "meta": {
+                    "color": "hsl(0, 80%, 73%)"
+                    }
                 }
-            }
             ]
         }
     ]

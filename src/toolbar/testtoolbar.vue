@@ -1,5 +1,9 @@
 <template>
 <v-toolbar app>
+    <v-toolbar-side-icon
+        v-if="primaryDrawer.type !== 'permanent'"
+        @click.stop="primaryDrawer.model = !primaryDrawer.model"
+      />
     <v-toolbar-title class="headline text-uppercase">
         <span>Vuetify</span>
         <span class="font-weight-light">MATERIAL DESIGN</span>
