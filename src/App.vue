@@ -1,38 +1,46 @@
 <template>
   <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-toolbar>
-
+    <toolbar/>
     <v-content>
-      <HelloWorld/>
+      <dashboard :data="data" :component-getter="getComponent" :editing="true"/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import Dashboard from 'dirk';
+import color from './panel/mytestpanel';
+import toolbar from './toolbar/testtoolbar';
+import {APIService} from './service/testapi';
+const apiService = new APIService();
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  },
-  data () {
-    return {
-      //
+  data: () => ({
+    data: {}
+    }),
+  methods: {
+    getData(){
+      apiService.getData().then((data) => {
+        this.data = data;
+      })
+    },
+    getComponent(name) {
+      if (name === 'color') {
+        return color;
+      }
+        return { render: h => h('p', '404 component not found') };
     }
-  }
+  },
+  mounted() {
+    this.getData();
+  },
+
+  
+  components: {
+    Dashboard,
+    toolbar
+  },
+
 }
 </script>
