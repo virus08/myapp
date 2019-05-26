@@ -1,7 +1,19 @@
 {
     "data": [
         {  
-            "id" : 1, 
+            "id" : 1,
+            "dark": true,
+            "drawers": ["Default (no property)", "Permanent", "Temporary"],
+            "primaryDrawer": {
+                "model": false,
+                "type": "default (no property)",
+                "clipped": false,
+                "floating": false,
+                "mini": false
+            },
+            "footer": {
+                "inset": false
+            },
             "type": "horizontal",
             "size": 1,
             "children": [

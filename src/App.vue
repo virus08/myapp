@@ -1,6 +1,26 @@
 <template>
   <v-app>
-    <toolbar/>
+    <v-navigation-drawer
+      v-model="data.primaryDrawer.model"
+      :permanent="data.primaryDrawer.type === 'permanent'"
+      :temporary="data.primaryDrawer.type === 'temporary'"
+      :clipped="data.primaryDrawer.clipped"
+      :floating="data.primaryDrawer.floating"
+      :mini-variant="data.primaryDrawer.mini"
+      absolute
+      overflow
+      app
+    ></v-navigation-drawer>
+    <v-toolbar app>
+      <v-toolbar-title class="headline text-uppercase">
+        <span>Vuetify</span>
+        <span class="font-weight-light">MATERIAL DESIGN</span>
+      </v-toolbar-title>
+      <v-spacer/>
+      <v-btn flat href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank">
+        <span class="mr-2">Latest Release</span>
+      </v-btn>
+    </v-toolbar>
     <v-content>
       <dashboard :data="data" :component-getter="getComponent" :editing="true"/>
     </v-content>
@@ -10,7 +30,6 @@
 <script>
 import Dashboard from 'dirk';
 import color from './panel/mytestpanel';
-import toolbar from './toolbar/testtoolbar';
 import {APIService} from './service/testapi';
 const apiService = new APIService();
 
@@ -19,6 +38,19 @@ export default {
   data: () => ({
     data: {  
             "id" : 1, 
+            dark: true,
+            drawers: ['Default (no property)', 'Permanent', 'Temporary'],
+            primaryDrawer: {
+              model: null,
+              type: 'default (no property)',
+              clipped: false,
+              floating: false,
+              mini: false
+            },
+            footer: {
+              inset: false
+            },
+
             "type": "horizontal",
             "size": 1,
             "children": [
@@ -60,8 +92,7 @@ export default {
 
   
   components: {
-    Dashboard,
-    toolbar
+    Dashboard
   },
 
 }
