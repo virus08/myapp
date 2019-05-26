@@ -12,6 +12,10 @@
       app
     ></v-navigation-drawer>
     <v-toolbar app>
+      <v-toolbar-side-icon
+        v-if="data.primaryDrawer.type !== 'permanent'"
+        @click.stop="data.primaryDrawer.model = !data.primaryDrawer.model"
+      />
       <v-toolbar-title class="headline text-uppercase">
         <span>Vuetify</span>
         <span class="font-weight-light">MATERIAL DESIGN</span>
@@ -64,7 +68,7 @@ export default {
                 },
                 {
                     "type": "panel",
-                    "size": 1,
+                    "size": 0.5,
                     "component": "color",
                     "meta": {
                     "color": "hsl(0, 80%, 73%)"
