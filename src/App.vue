@@ -91,7 +91,10 @@ export default {
     }
   },
   mounted() {
-    this.getData();
+    setInterval(() => {
+		  this.getData();
+	  }, 12000)
+    
   },
 
   
