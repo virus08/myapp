@@ -1,60 +1,106 @@
 <template>
-  <v-app>
+  <v-app id="inspire">
     <v-navigation-drawer
-      v-model="data.primaryDrawer.model"
-      :permanent="data.primaryDrawer.type === 'permanent'"
-      :temporary="data.primaryDrawer.type === 'temporary'"
-      :clipped="data.primaryDrawer.clipped"
-      :floating="data.primaryDrawer.floating"
-      :mini-variant="data.primaryDrawer.mini"
-      absolute
-      overflow
+      v-model="drawerRight"
+      fixed
+      right
+      clipped
       app
-    ></v-navigation-drawer>
-    <v-toolbar app>
-      <v-toolbar-side-icon
-        v-if="data.primaryDrawer.type !== 'permanent'"
-        @click.stop="data.primaryDrawer.model = !data.primaryDrawer.model"
-      />
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer/>
-      <v-btn flat href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank">
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
+    >
+      <v-list dense>
+        <v-list-tile @click.stop="right = !right">
+          <v-list-tile-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar
+      color="blue-grey"
+      dark
+      fixed
+      app
+      clipped-right
+    >
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>{{pagename}}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-side-icon @click.stop="drawerRight = !drawerRight"><v-icon>arrow_drop_down_circle</v-icon></v-toolbar-side-icon>
+      <v-avatar size="36px" @click.stop="drawerRight = !drawerRight">
+        <img v-if="message.avatar"
+          src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+          alt="Avatar"
+        >
+        <v-icon
+          v-else
+          :color="message.color"
+          v-text="message.icon"
+        ></v-icon>
+      </v-avatar>
     </v-toolbar>
+    <v-navigation-drawer
+      v-model="drawer"
+      fixed
+      app
+    >
+      <v-list dense>
+        <v-list-tile @click.stop="left = !left">
+          <v-list-tile-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-navigation-drawer
+      v-model="left"
+      temporary
+      fixed
+    ></v-navigation-drawer>
     <v-content>
       <dashboard :data="data" :component-getter="getComponent" :editing="true"/>
     </v-content>
+    <v-navigation-drawer
+      v-model="right"
+      right
+      temporary
+      fixed
+    ></v-navigation-drawer>
+    <v-footer color="blue-grey" class="white--text" app>
+      <span>VSTECS (THAILAND) CO.,LTD.</span>
+      <v-spacer></v-spacer>
+      <span>&copy; 2019</span>
+    </v-footer>
   </v-app>
 </template>
 
 <script>
-import Dashboard from 'dirk';
-import color from './panel/mytestpanel';
-import {APIService} from './service/testapi';
-const apiService = new APIService();
+  import Dashboard from 'dirk';
+  import color from './panel/mytestpanel';
+  import {APIService} from './service/testapi';
+  const apiService = new APIService();
+  import authentication from './authentication'
 
-export default {
-  name: 'App',
-  data: () => ({
-    data: {  
-            "id" : 1, 
-            dark: true,
-            drawers: ['Default (no property)', 'Permanent', 'Temporary'],
-            primaryDrawer: {
-              model: null,
-              type: 'default (no property)',
-              clipped: false,
-              floating: false,
-              mini: false
-            },
-            footer: {
-              inset: false
-            },
-
+  export default {
+    data: () => ({
+      pagename:'Timesheet',
+      drawer: false,
+      drawerRight: false,
+      right: false,
+      left: false,
+      message: 
+        {
+          avatar: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',
+          name: 'John Leider',
+          title: 'Welcome to Vuetify.js!',
+          excerpt: 'Thank you for joining our community...'
+        },
+      data: {  
             "type": "horizontal",
             "size": 1,
             "children": [
@@ -77,7 +123,10 @@ export default {
             ]
         }
     }),
-  methods: {
+    props: {
+      source: String
+    },
+    methods: {
     getData(){
       apiService.getData().then((data) => {
         this.data = data;
@@ -89,18 +138,21 @@ export default {
       }
         return { render: h => h('p', '404 component not found') };
     }
-  },
-  mounted() {
-    setInterval(() => {
-		  this.getData();
-	  }, 12000)
-    
-  },
-
-  
-  components: {
-    Dashboard
-  },
-
-}
+    },
+    mounted() {
+      this.getData();
+      setInterval(() => {
+        this.getData();
+      }, 12000)
+      
+    },
+    components: {
+      Dashboard
+    },
+    computed: {
+      isAuthenticated() {
+        return authentication.isAuthenticated();
+      }
+    }
+  }
 </script>
