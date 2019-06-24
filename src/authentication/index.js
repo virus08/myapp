@@ -3,9 +3,11 @@ import AuthenticationContext from 'adal-angular/lib/adal.js'
 const config = {
   tenant: '77b4cfe7-494a-4690-bdb7-c365a20ddfb3',
   clientId: '7e701775-07ff-47af-9d7d-3303fa32d7a1',
-  redirectUri: 'https://chaistorage.z23.web.core.windows.net/auth',
+  // redirectUri: 'https://chaistorage.z23.web.core.windows.net/auth',
+  redirectUri: 'http://localhost:8080/auth',
   cacheLocation: 'localStorage'
 };
+ 
 export default {
   authenticationContext: null,
   /**
@@ -36,7 +38,7 @@ export default {
    */
   acquireToken() {
     return new Promise((resolve, reject) => {
-      this.authenticationContext.acquireToken('<azure active directory resource id>', (error, token) => {
+      this.authenticationContext.acquireToken('7e701775-07ff-47af-9d7d-3303fa32d7a1', (error, token) => {
         if (error || !token) {
           return reject(error);
         } else {
@@ -49,7 +51,7 @@ export default {
    * Issue an interactive authentication request for the current user and the api resource.
    */
   acquireTokenRedirect() {
-    this.authenticationContext.acquireTokenRedirect('<azure active directory resource id>');
+    this.authenticationContext.acquireTokenRedirect('7e701775-07ff-47af-9d7d-3303fa32d7a1');
   },
   /**
    * @return {Boolean} Indicates if there is a valid, non-expired access token present in localStorage.
