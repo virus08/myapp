@@ -1,89 +1,13 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawerRight" fixed right clipped app>
-      <v-layout justify-center>
-        <v-flex xs12 >
-          <v-card>
-            <v-card-title class="cyan darken-1">
-              <span class="title white--text">{{me.givenName}}&nbsp;{{me.surname}}</span>
-
-              <v-spacer></v-spacer>
-
-            </v-card-title>
-
-            <v-list>
-              <v-list-tile @click="bank">
-                <v-list-tile-action>
-                  <v-icon>mobile_screen_share</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>{{me.mobilePhone}}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-
-              <v-divider inset></v-divider>
-
-              <v-list-tile @click="bank">
-                <v-list-tile-action>
-                  <v-icon>phone</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>{{me.businessPhones}}</v-list-tile-title>
-                </v-list-tile-content>
-
-              </v-list-tile>
-
-              <v-divider inset></v-divider>
-
-              <v-list-tile @click="bank">
-                <v-list-tile-action>
-                  <v-icon>mail</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>{{me.mail}}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-
-              <v-divider inset></v-divider>
-
-              <v-list-tile @click="bank">
-                <v-list-tile-action>
-                  <v-icon>work</v-icon>
-                </v-list-tile-action>
-
-                <v-list-tile-content>
-                  <v-list-tile-title>{{me.jobTitle}}</v-list-tile-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </v-list>
-
-            <v-img id="profiles"
-              src="https://picsum.photos/700?image=996"
-              height="200px"
-            ></v-img>
-          </v-card>
-        </v-flex>
-      </v-layout>
-      <v-list dense>
-        <v-list-tile @click.stop="logOut">
-          <v-list-tile-action>
-            <v-icon>highlight_off</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>LogOut</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
       <v-list dense>
         <v-list-tile @click.stop="right = !right">
           <v-list-tile-action>
-            <v-icon>build</v-icon>
+            <v-icon>exit_to_app</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>Configure</v-list-tile-title>
+            <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -98,17 +22,37 @@
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>{{pagename}}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-avatar size="52px" @click.stop="drawerRight = !drawerRight">
-        <img v-if="message.avatar" id="profiles"
-          src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-          alt="Avatar"
-        >
-        <v-icon
-          v-else
-          :color="message.color"
-          v-text="message.icon"
-        ></v-icon>
-      </v-avatar>
+      <v-menu offset-y>
+         <template v-slot:activator="{ on }">
+            <v-avatar size="50px" v-on="on">
+              <img v-if="message.avatar"
+                src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                alt="Avatar"
+              >
+              <v-icon
+                v-else
+                :color="message.color"
+                v-text="message.icon"
+              ></v-icon>
+            </v-avatar>
+        </template>
+        <v-list>
+          <v-list-tile  :key="1" >
+            <v-list-tile-title>{{ profiles.name }}</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile  :key="2" >
+            <v-list-tile-title>{{ me.jobTitle }}</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile :key="3" @click="logOut">
+            <v-list-tile-action>
+              <v-icon>local_activity</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Logout</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
     </v-toolbar>
     <v-navigation-drawer
       v-model="drawer"
@@ -121,7 +65,7 @@
             <v-icon>exit_to_app</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>aaa</v-list-tile-title>
+            <v-list-tile-title>Open Temporary Drawer</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
@@ -164,13 +108,7 @@
       authenticationContext: null,
       token:null,
       me:{
-        displayName:null,
-        businessPhones:null,
-        mobilePhone:null,
-        givenName:null,
-        surname:null,
-        jobTitle:null,
-        mall:null
+        jobTitle:null
       },
       profiles: {
         name:null
@@ -241,9 +179,6 @@
         graphservice.getMe().then((data) => {
           this.me = data
         });
-      },
-      bank(){
-
       }
     },
     mounted() {
@@ -252,8 +187,6 @@
       this.profiles= authentication.getUserProfile();
       // this.me = graphservice.getMe ;
       this.getProfiles();
-      
-      document.getElementById('profiles').setAttribute("src", "/test");
       /*
       setInterval(() => {
         this.getProfiles();
@@ -268,5 +201,4 @@
       }
     }
   }
-  // $('#profiles').attr("src", "");
 </script>

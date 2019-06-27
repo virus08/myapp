@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import AuthenticationContext from 'adal-angular/lib/adal.js'
 
 const config = {
@@ -38,7 +39,7 @@ export default {
    */
   acquireToken() {
     return new Promise((resolve, reject) => {
-      this.authenticationContext.acquireToken('7e701775-07ff-47af-9d7d-3303fa32d7a1', (error, token) => {
+      this.authenticationContext.acquireToken('https://graph.microsoft.com', (error, token) => {
         if (error || !token) {
           return reject(error);
         } else {
@@ -51,7 +52,7 @@ export default {
    * Issue an interactive authentication request for the current user and the api resource.
    */
   acquireTokenRedirect() {
-    this.authenticationContext.acquireTokenRedirect('7e701775-07ff-47af-9d7d-3303fa32d7a1');
+    this.authenticationContext.acquireTokenRedirect(config.redirectUri);
   },
   /**
    * @return {Boolean} Indicates if there is a valid, non-expired access token present in localStorage.
@@ -67,6 +68,8 @@ export default {
   getUserProfile() {
     return this.authenticationContext.getCachedUser().profile;
   },
+  
+
   signIn() {
     this.authenticationContext.login();
   },

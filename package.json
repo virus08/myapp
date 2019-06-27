@@ -8,6 +8,8 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@microsoft/microsoft-graph-client": "^1.7.0",
+    "@microsoft/microsoft-graph-types": "^1.9.0",
     "adal-angular": "^1.0.17",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",

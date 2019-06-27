@@ -1,16 +1,34 @@
-<script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.0/js/msal.js"></script>
-var msalConfig = {
-    auth: {
-        clientId: "e760cab2-b9a1-4c0d-86fb-ff7084abd902", //This is your client ID
-        authority: "https://login.microsoftonline.com/tfp/fabrikamb2c.onmicrosoft.com/b2c_1_susi" //This is your tenant info
-    },
-    cache: {
-        cacheLocation: "localStorage",
-        storeAuthStateInCookie: true
+import axios from 'axios';
+import authentication from '../authentication'; 
+const API_URL = 'https://graph.microsoft.com';
+
+
+// const API_URL = 'https://es-timesheet-api.azurewebsites.net';
+export class GraphService{
+    getToken (){
+        var xtoken;
+        authentication.authenticationContext.acquireToken(`${API_URL}`, (error, token) => {
+            if (error || !token) {
+              xtoken = error;
+            } else {
+              xtoken = token;
+            }
+          });
+        return xtoken;
     }
-};
-var clientApplication = new Msal.UserAgentApplication(msalConfig); 
+    
+    getMe() {
+        const url = `${API_URL}/v1.0/me`;
+        var xtoken = this.getToken();
+        // console.log(xtoken);
+        // var test;
+        return axios({
+            method: 'get',
+            headers:{'authorization':'Bearer '+ xtoken},
+            url: url,
+            dataType:'json'
+          }).then(response => response.data);
+        // return test;
 
-export class msalService {
-
+    }
 }
