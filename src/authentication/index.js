@@ -4,8 +4,8 @@ import AuthenticationContext from 'adal-angular/lib/adal.js'
 const config = {
   tenant: '77b4cfe7-494a-4690-bdb7-c365a20ddfb3',
   clientId: '7e701775-07ff-47af-9d7d-3303fa32d7a1',
-  // redirectUri: 'https://chaistorage.z23.web.core.windows.net/auth',
-  redirectUri: 'http://localhost:8080/auth',
+  redirectUri: 'https://chaistorage.z23.web.core.windows.net/',
+  // redirectUri: 'http://localhost:8080/auth',
   cacheLocation: 'localStorage'
 };
  
