@@ -31,4 +31,17 @@ export class GraphService{
         // return test;
 
     }
+    
+    getImg() {
+      const url = `${API_URL}/v1.0/me/photos/64x64/$value`;
+      var xtoken = this.getToken();
+      // console.log(xtoken);
+      var test =  axios({
+          method: 'get',
+          headers:{'authorization':'Bearer '+ xtoken},
+          url: url,
+          responseType: 'arraybuffer'
+        }).then(response => response.data);
+      return test;
+    }
 }
