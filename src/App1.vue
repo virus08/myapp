@@ -252,12 +252,12 @@
       this.getProfilesImg();
       // document.getElementById('profiles').setAttribute("src", "/test");
 
-      // if (!this.me.name){
+      if (!this.me.name){
         setInterval(() => {
           this.getProfiles();
           this.getProfilesImg();
         }, 1000)
-      // }
+      }
       
     },
     components: {
