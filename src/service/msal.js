@@ -33,7 +33,7 @@ export class GraphService{
     }
     
     getImg() {
-      const url = `${API_URL}/v1.0/me/photos/64x64/$value`;
+      const url = `${API_URL}/v1.0/me/photos/648x648/$value`;
       var xtoken = this.getToken();
       // console.log(xtoken);
       var test =  axios({
